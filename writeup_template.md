@@ -100,85 +100,71 @@ The final model architecture (model.py lines 138-157) consisted of a convolution
 Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
 
 Here is summary of how network looks:
-____________________________________________________________________________________________________
-Layer (type)                     Output Shape          Param #     Connected to                     
-====================================================================================================
-convolution2d_1 (Convolution2D)  (None, 62, 62, 16)    448         convolution2d_input_1[0][0]      
+_____________________________________________________________
+Layer (type)                     Output Shape          Param 
+=============================================================
+convolution2d_1 (Convolution2D)  (None, 62, 62, 16)    448   
 (16, 3, 3)
-____________________________________________________________________________________________________
-maxpooling2d_1 (MaxPooling2D)    (None, 31, 31, 16)    0           convolution2d_1[0][0]            
-____________________________________________________________________________________________________
-convolution2d_2 (Convolution2D)  (None, 29, 29, 32)    4640        maxpooling2d_1[0][0]             
+_____________________________________________________________
+maxpooling2d_1 (MaxPooling2D)    (None, 31, 31, 16)    0     
+_____________________________________________________________
+convolution2d_2 (Convolution2D)  (None, 29, 29, 32)    4640  
 (32, 3, 3)
-____________________________________________________________________________________________________
-maxpooling2d_2 (MaxPooling2D)    (None, 14, 14, 32)    0           convolution2d_2[0][0]            
-____________________________________________________________________________________________________
-convolution2d_3 (Convolution2D)  (None, 12, 12, 32)    9248        maxpooling2d_2[0][0]             
+_____________________________________________________________
+maxpooling2d_2 (MaxPooling2D)    (None, 14, 14, 32)    0     
+_____________________________________________________________
+convolution2d_3 (Convolution2D)  (None, 12, 12, 32)    9248  
 (32, 3, 3)
-____________________________________________________________________________________________________
-convolution2d_4 (Convolution2D)  (None, 10, 10, 64)    18496       convolution2d_3[0][0]            
+_____________________________________________________________
+convolution2d_4 (Convolution2D)  (None, 10, 10, 64)    18496 
 (64, 3, 3)
-____________________________________________________________________________________________________
-maxpooling2d_3 (MaxPooling2D)    (None, 5, 5, 64)      0           convolution2d_4[0][0]            
-____________________________________________________________________________________________________
-convolution2d_5 (Convolution2D)  (None, 3, 3, 64)      36928       maxpooling2d_3[0][0]             
+_____________________________________________________________
+maxpooling2d_3 (MaxPooling2D)    (None, 5, 5, 64)      0     
+_____________________________________________________________
+convolution2d_5 (Convolution2D)  (None, 3, 3, 64)      36928 
 (64, 3, 3)
-____________________________________________________________________________________________________
-maxpooling2d_4 (MaxPooling2D)    (None, 1, 1, 64)      0           convolution2d_5[0][0]            
-____________________________________________________________________________________________________
-flatten_1 (Flatten)              (None, 64)            0           maxpooling2d_4[0][0]             
-____________________________________________________________________________________________________
-dense_1 (Dense)                  (None, 1000)          65000       flatten_1[0][0]                  
-____________________________________________________________________________________________________
-dropout_1 (Dropout)              (None, 1000)          0           dense_1[0][0]                    
-____________________________________________________________________________________________________
-dense_2 (Dense)                  (None, 500)           500500      dropout_1[0][0]                  
-____________________________________________________________________________________________________
-dropout_2 (Dropout)              (None, 500)           0           dense_2[0][0]                    
-____________________________________________________________________________________________________
-dense_3 (Dense)                  (None, 100)           50100       dropout_2[0][0]                  
-____________________________________________________________________________________________________
-dropout_3 (Dropout)              (None, 100)           0           dense_3[0][0]                    
-____________________________________________________________________________________________________
-dense_4 (Dense)                  (None, 20)            2020        dropout_3[0][0]                  
-____________________________________________________________________________________________________
-dense_5 (Dense)                  (None, 1)             21          dense_4[0][0]                    
-====================================================================================================
+_____________________________________________________________
+maxpooling2d_4 (MaxPooling2D)    (None, 1, 1, 64)      0     
+_____________________________________________________________
+flatten_1 (Flatten)              (None, 64)            0     
+_____________________________________________________________
+dense_1 (Dense)                  (None, 1000)          65000 
+_____________________________________________________________
+dropout_1 (Dropout)              (None, 1000)          0     
+_____________________________________________________________
+dense_2 (Dense)                  (None, 500)           500500
+_____________________________________________________________
+dropout_2 (Dropout)              (None, 500)           0     
+_____________________________________________________________
+dense_3 (Dense)                  (None, 100)           50100 
+_____________________________________________________________
+dropout_3 (Dropout)              (None, 100)           0     
+_____________________________________________________________
+dense_4 (Dense)                  (None, 20)            2020  
+_____________________________________________________________
+dense_5 (Dense)                  (None, 1)             21    
+_____________________________________________________________
 Total params: 687,401
 Trainable params: 687,401
 Non-trainable params: 0
-____________________________________________________________________________________________________
+_____________________________________________________________
 Epoch 1/5
 
 ####3. Creation of the Training Set & Training Process
 
-To capture good driving behavior, I first recorded 6 laps on track one using center lane driving. Here is an example image of center lane driving after cropping:
+To capture good driving behavior, I first recorded 6 laps on track one using center lane driving after that i driven in opposite direction for 3 laps. Here is an example image of center lane driving after cropping:
 
 ![alt text][image2]
 
-Here are images after applying gray scale, cropping and resizing
+
+
+To augment the data sat, I also flipped images and angles thinking that this would increase training data. You can see that in code lines 74 - 83.
+
+After the collection process, I had 45021 number of images (data points). I then preprocessed this data by applying Gray scale, cropping and image resiz. Here are images after applying gray scale, cropping and resizing.
 
 ![alt text][image3]
 ![alt text][image4]
 
-I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to get back on track. 
+I finally randomly shuffled the data set and put 20% of the data into a validation set. 
 
-![alt text][image3]
-![alt text][image4]
-![alt text][image5]
-
-Then I repeated this process on track two in order to get more data points.
-
-To augment the data sat, I also flipped images and angles thinking that this would ... For example, here is an image that has then been flipped:
-
-![alt text][image6]
-![alt text][image7]
-
-Etc ....
-
-After the collection process, I had X number of data points. I then preprocessed this data by ...
-
-
-I finally randomly shuffled the data set and put Y% of the data into a validation set. 
-
-I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was Z as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.
+I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was 5 as evidenced by my driving video. I used an adam optimizer so that manually training the learning rate wasn't necessary.
