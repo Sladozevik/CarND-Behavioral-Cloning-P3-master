@@ -2,8 +2,6 @@
 
 ##Ante Sladoejvic - Writeup
 
-###You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
-
 ---
 
 **Behavioral Cloning Project**
@@ -78,13 +76,11 @@ For details about how I created the training data, see the next section.
 
 ####1. Solution Design Approach
 
-The overall strategy for deriving a model architecture was to 
-
 My first step was to use a convolution neural network model similar to the Nvidia research paper I thought this model might be appropriate because it worked.
 
 In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that Nvidia model had a low mean squared error and did not succeed to drive whole lap. On the training set but a high mean squared error on the validation set. This implied that the model was overfitting. 
 
-To combat the overfitting, I modified the model by copying Nvidia model, adding dropout and MaxPooling layers.
+To combat the overfitting, I modified the model by copying Nvidia model, adding dropout. After that i added MaxPooling layers.
 
 Then I flattened model from 1000 -> 500 -> 100 -> 20 -> 1
 
@@ -100,54 +96,29 @@ The final model architecture (model.py lines 138-157) consisted of a convolution
 Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
 
 Here is summary of how network looks:
-_____________________________________________________________
-Layer (type)                     Output Shape          Param 
-=============================================================
-convolution2d_1 (Convolution2D)  (None, 62, 62, 16)    448   
-(16, 3, 3)
-_____________________________________________________________
-maxpooling2d_1 (MaxPooling2D)    (None, 31, 31, 16)    0     
-_____________________________________________________________
-convolution2d_2 (Convolution2D)  (None, 29, 29, 32)    4640  
-(32, 3, 3)
-_____________________________________________________________
-maxpooling2d_2 (MaxPooling2D)    (None, 14, 14, 32)    0     
-_____________________________________________________________
-convolution2d_3 (Convolution2D)  (None, 12, 12, 32)    9248  
-(32, 3, 3)
-_____________________________________________________________
-convolution2d_4 (Convolution2D)  (None, 10, 10, 64)    18496 
-(64, 3, 3)
-_____________________________________________________________
-maxpooling2d_3 (MaxPooling2D)    (None, 5, 5, 64)      0     
-_____________________________________________________________
-convolution2d_5 (Convolution2D)  (None, 3, 3, 64)      36928 
-(64, 3, 3)
-_____________________________________________________________
-maxpooling2d_4 (MaxPooling2D)    (None, 1, 1, 64)      0     
-_____________________________________________________________
-flatten_1 (Flatten)              (None, 64)            0     
-_____________________________________________________________
-dense_1 (Dense)                  (None, 1000)          65000 
-_____________________________________________________________
-dropout_1 (Dropout)              (None, 1000)          0     
-_____________________________________________________________
-dense_2 (Dense)                  (None, 500)           500500
-_____________________________________________________________
-dropout_2 (Dropout)              (None, 500)           0     
-_____________________________________________________________
-dense_3 (Dense)                  (None, 100)           50100 
-_____________________________________________________________
-dropout_3 (Dropout)              (None, 100)           0     
-_____________________________________________________________
-dense_4 (Dense)                  (None, 20)            2020  
-_____________________________________________________________
-dense_5 (Dense)                  (None, 1)             21    
-_____________________________________________________________
+
+(Convolution2D (16, 3, 3))  (None, 62, 62, 16)
+(MaxPooling2D)    			(None, 31, 31, 16)
+(Convolution2D (32, 3, 3))  (None, 29, 29, 32)
+(MaxPooling2D)  			(None, 14, 14, 32)
+(Convolution2D (32, 3, 3))  (None, 12, 12, 32)
+(Convolution2D (64, 3, 3))  (None, 10, 10, 64)
+(MaxPooling2D)  			(None, 5, 5, 64)  
+(Convolution2D (64, 3, 3))  (None, 3, 3, 64)  
+(MaxPooling2D)  			(None, 1, 1, 64)  
+flatten_1 (Flatten)         (None, 64)    
+dense_1 (Dense)             (None, 1000)  
+dropout_1 (Dropout)         (None, 1000)  
+dense_2 (Dense)             (None, 500)   
+dropout_2 (Dropout)         (None, 500)   
+dense_3 (Dense)             (None, 100)   
+dropout_3 (Dropout)         (None, 100)   
+dense_4 (Dense)             (None, 20)    
+dense_5 (Dense)             (None, 1)     
 Total params: 687,401
+
 Trainable params: 687,401
 Non-trainable params: 0
-_____________________________________________________________
 Epoch 1/5
 
 ####3. Creation of the Training Set & Training Process
@@ -160,7 +131,7 @@ To capture good driving behavior, I first recorded 6 laps on track one using cen
 
 To augment the data sat, I also flipped images and angles thinking that this would increase training data. You can see that in code lines 74 - 83.
 
-After the collection process, I had 45021 number of images (data points). I then preprocessed this data by applying Gray scale, cropping and image resiz. Here are images after applying gray scale, cropping and resizing.
+After the collection process, I had 45021 number of images (data points). I then preprocessed this data by applying Gray scale, cropping and image resizing to 64x64x3. Here are images after applying gray scale, cropping and resizing.
 
 ![alt text][image3]
 ![alt text][image4]
