@@ -1,6 +1,6 @@
 #**Udacity Self Driving Car - Behavioral Cloning** 
 
-##Ante Sladoejvic - Writeup
+##Ante Sladojevic - Writeup
 
 ---
 
