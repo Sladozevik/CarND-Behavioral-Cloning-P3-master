@@ -165,4 +165,4 @@ I used this training data for training the model. The validation set helped dete
 
 I had many issues in final part of project: my model started to work and I just needed to fine tune (add more data and more augmentation of images) but due unknown reason everything fell apart and model stopped working. Even I had backup I could not return to working model. I could not debug and find a bug. I have re-driven and add new images, I have checked, double cheeked the code and did not find what happened. Finally I rewritten the whole code and succeeded to get back on track. Due all of this I am late with my submission. 
 
-To improve model I would add more training data, fine tune augmentation of images, definitely try to improve model with changing model layers.
+In my Video in start of driving and last part of lap you can see that car is moving left and right. to improve driving skills of my current car and to improve model I would add more training data, fine tune augmentation of images, definitely try to improve model with changing model layers.
