@@ -98,25 +98,42 @@ Here is a visualization of the architecture (note: visualizing the architecture 
 Here is summary of how network looks:
 
 (Convolution2D (16, 3, 3))  (None, 62, 62, 16)
-(MaxPooling2D)    			(None, 31, 31, 16)
-(Convolution2D (32, 3, 3))  (None, 29, 29, 32)
-(MaxPooling2D)  			(None, 14, 14, 32)
-(Convolution2D (32, 3, 3))  (None, 12, 12, 32)
-(Convolution2D (64, 3, 3))  (None, 10, 10, 64)
-(MaxPooling2D)  			(None, 5, 5, 64)  
-(Convolution2D (64, 3, 3))  (None, 3, 3, 64)  
-(MaxPooling2D)  			(None, 1, 1, 64)  
-flatten_1 (Flatten)         (None, 64)    
-dense_1 (Dense)             (None, 1000)  
-dropout_1 (Dropout)         (None, 1000)  
-dense_2 (Dense)             (None, 500)   
-dropout_2 (Dropout)         (None, 500)   
-dense_3 (Dense)             (None, 100)   
-dropout_3 (Dropout)         (None, 100)   
-dense_4 (Dense)             (None, 20)    
-dense_5 (Dense)             (None, 1)     
-Total params: 687,401
 
+(MaxPooling2D)    			(None, 31, 31, 16)
+
+(Convolution2D (32, 3, 3))  (None, 29, 29, 32)
+
+(MaxPooling2D)  			(None, 14, 14, 32)
+
+(Convolution2D (32, 3, 3))  (None, 12, 12, 32)
+
+(Convolution2D (64, 3, 3))  (None, 10, 10, 64)
+
+(MaxPooling2D)  			(None, 5, 5, 64)  
+
+(Convolution2D (64, 3, 3))  (None, 3, 3, 64)  
+
+(MaxPooling2D)  			(None, 1, 1, 64)  
+
+flatten_1 (Flatten)         (None, 64)    
+
+dense_1 (Dense)             (None, 1000)  
+
+dropout_1 (Dropout)         (None, 1000)  
+
+dense_2 (Dense)             (None, 500)   
+
+dropout_2 (Dropout)         (None, 500)   
+
+dense_3 (Dense)             (None, 100)   
+
+dropout_3 (Dropout)         (None, 100)   
+
+dense_4 (Dense)             (None, 20)    
+
+dense_5 (Dense)             (None, 1)     
+
+Total params: 687,401
 Trainable params: 687,401
 Non-trainable params: 0
 Epoch 1/5
