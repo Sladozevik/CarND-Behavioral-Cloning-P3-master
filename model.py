@@ -11,17 +11,49 @@ import sklearn
 import csv
 import cv2
 import skimage.transform as sktransform
-# import data.py with all data processing functions
-from data import *
 
-def generator(samples, batch_size=64):
-    # Build generator s o
+samples = []
+with open('./data/driving_log.csv') as csvfile:
+    reader = csv.reader(csvfile)
+    for line in reader:
+        samples.append(line)
+
+# Split data to training and validation data
+train_samples, validation_samples = train_test_split(samples, test_size= 0.2)
+
+# Test did split go well
+print('samples combines', len(samples))
+print('train samples all', len(train_samples))
+print('val samples all', len(validation_samples))
+
+def read_image_gray_norma(name):
+    # Read image, convert to gray scale and normalize
+    image = cv2.imread(name)
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    image = image/255.-.5
+    return image
+
+def preprocess(image):
+    # Crop image
+    image_cropped = image[60:140,0:320]
+    # Resize image
+    image_cropped = scipy.misc.imresize(image_cropped, (64, 64, 3)) 
+    # cv2.imshow('image',image_cropped)
+    # cv2.waitKey(0)
+    return image_cropped
+
+def preprocess_flipped_image(image):
+    # Flip image 
+    flipped_image = cv2.flip(image,1)
+    return flipped_image
+
+def generator(samples, batch_size=128):
+    # Build generator
     num_samples = len(samples)
     while 1:
         sklearn.utils.shuffle(samples)
         for offset in range(0, num_samples, batch_size):
             batch_samples = samples[offset:offset+batch_size]
-            
             images = []
             angles = []
             for batch_sample in batch_samples:
@@ -29,26 +61,16 @@ def generator(samples, batch_size=64):
                     source_path = batch_sample[i]
                     split_path = source_path.split('\\')
                     file_name = split_path[-1]
-                    file_name_split = file_name.split('_')
-                    if file_name_split[1] == '2016':
-                        local_path_ud = './ud_data/IMG/' + '_'.join(file_name_split)
-                        image = preprocess(read_image_gray_norma(local_path_ud))
-                        # image = read_image_gray_norma(local_path_ud)
-#                        print('LP Udacity', local_path_ud)
-                        # images.append(image)
-                    else:
-                        local_path_my = './my_data/IMG/' + '_'.join(file_name_split)
-                        image = preprocess(read_image_gray_norma(local_path_my))
-                        # image = read_image_gray_norma(local_path_my)
-#                        print('LP MY', local_path_my)
+                    local_path = './data/IMG/' + file_name
+                    image = preprocess(read_image_gray_norma(local_path))
                     images.append(image)
-                correction_angle = 0.25                         # Correction angle due left and right image are looking from different angle
+                correction_angle = 0.18                         # Correction angle due left and right image are looking from different angle
                 angle = float(batch_sample[3])
                 angles.append(angle)                            # Appending Center Steering angle
                 angles.append(angle + correction_angle)         # Appending Left Steering angle
                 angles.append(angle - correction_angle)         # Appending Right Steering angle
                 
-            # Flip images and append to directory
+            # flip images and append to directory
             flipped_images = []
             flipped_angles = []
             for image, angle in zip(images, angles):
@@ -91,29 +113,53 @@ model = Sequential()
 # model.add(BatchNormalization(epsilon=0.001,mode=2, axis=1,input_shape=(160,320,3)))
 
 # Cropping images
-# model.add(Cropping2D(cropping=((60,20),(0,0))))
+# model.add(Cropping2D(input_shape=(160,320,3), cropping=((60,20),(0,0))))
 # NVIDIA model parameters
-model.add(Convolution2D(3, 5, 5, input_shape=(64,64,3), subsample=subsample, activation='relu'))
-model.add(Convolution2D(24, 5, 5, subsample=subsample, activation='relu'))
-model.add(Convolution2D(36, 5, 5, subsample=subsample, activation='relu'))
-model.add(Convolution2D(48, 3, 3, activation='relu'))
+# model.add(Convolution2D(3, 5, 5, subsample=subsample, activation='relu'))
+# model.add(Convolution2D(24, 5, 5, subsample=subsample, activation='relu'))
+# model.add(Convolution2D(36, 5, 5, subsample=subsample, activation='relu'))
+# model.add(Convolution2D(48, 3, 3, activation='relu'))
+# model.add(Convolution2D(64, 3, 3, activation='relu'))
+# model.add(Convolution2D(64, 3, 3, activation='relu')) # new one
+# model.add(Flatten())
+# # model.add(Dense(1164, activation='relu'))
+# # model.add(Dropout(.5))
+# model.add(Dense(100, activation='relu'))
+# model.add(Dropout(.2))
+# model.add(Dense(50, activation='relu'))
+# model.add(Dropout(.1))
+# model.add(Dense(10, activation='relu'))
+# model.add(Dense(1, activation='relu'))
+# model.summary()
+# model.compile(loss='mean_squared_error',
+#                    optimizer='adam',
+#                    metrics=['accuracy'])
+
+model.add(Convolution2D(16, 3, 3, input_shape=(64, 64, 3), activation='relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Convolution2D(32, 3, 3, activation='relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Convolution2D(32, 3, 3, activation='relu'))
 model.add(Convolution2D(64, 3, 3, activation='relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Convolution2D(64, 3, 3, activation='relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Flatten())
-model.add(Dense(1164, activation='linear'))
+model.add(Dense(1000, activation='relu'))
 model.add(Dropout(.5))
-model.add(Dense(100, activation='linear'))
-model.add(Dropout(.2))
-model.add(Dense(50, activation='linear'))
-model.add(Dropout(.1))
-model.add(Dense(10, activation='linear'))
-model.add(Dense(1, activation='linear'))
+model.add(Dense(500, activation='relu'))
+model.add(Dropout(.5))
+model.add(Dense(100, activation='relu'))
+model.add(Dropout(.25))
+model.add(Dense(20, activation='relu'))
+model.add(Dense(1))
 model.summary()
 model.compile(loss='mean_squared_error',
                    optimizer='adam',
                    metrics=['accuracy'])
 
-train_generator = generator(train_samples, batch_size=64)
-validation_generator = generator(validation_samples, batch_size=64)
+train_generator = generator(train_samples, batch_size=128)
+validation_generator = generator(validation_samples, batch_size=128)
 
 #samples_per_epoch = 49488
 #nb_val_samples = 12378

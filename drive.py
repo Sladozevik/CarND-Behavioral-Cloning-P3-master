@@ -17,8 +17,6 @@ from keras.models import load_model
 import h5py
 from keras import __version__ as keras_version
 
-from data import *
-
 sio = socketio.Server()
 app = Flask(__name__)
 model = None
@@ -49,6 +47,14 @@ controller = SimplePIController(0.1, 0.002)
 set_speed = 30
 controller.set_desired(set_speed)
 
+def preprocess(image):
+    # Crop image
+    image_cropped = image[60:140,0:320]
+    # Resize image
+    image_cropped = scipy.misc.imresize(image_cropped, (64, 64, 3)) 
+    # cv2.imshow('image',image_cropped)
+    # cv2.waitKey(0)
+    return image_cropped
 
 @sio.on('telemetry')
 def telemetry(sid, data):
