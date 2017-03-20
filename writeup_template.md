@@ -19,9 +19,6 @@ The goals / steps of this project are the following:
 [image2]: ./examples/img_driving.png "Image Driving"
 [image3]: ./examples/img_rgb.png "Image RGB"
 [image4]: ./examples/img_gray.png "Image Gray"
-[image5]: ./examples/placeholder_small.png "Recovery Image"
-[image6]: ./examples/placeholder_small.png "Normal Image"
-[image7]: ./examples/placeholder_small.png "Flipped Image"
 
 ## Rubric Points
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
@@ -80,7 +77,7 @@ My first step was to use a convolution neural network model similar to the Nvidi
 
 In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that Nvidia model had a low mean squared error and did not succeed to drive whole lap. On the training set but a high mean squared error on the validation set. This implied that the model was overfitting. 
 
-To combat the overfitting, I modified the model by copying Nvidia model, adding dropout. After that i added MaxPooling layers.
+To combat the overfitting, I modified the model by copying Nvidia model adjusting it by adding dropout. After that i added MaxPooling layers.
 
 Then I flattened model from 1000 -> 500 -> 100 -> 20 -> 1
 
@@ -92,8 +89,6 @@ At the end of the process, the vehicle is able to drive autonomously around the 
 ### 2. Final Model Architecture
 
 The final model architecture (model.py lines 138-157) consisted of a convolution neural network with the following layers and layer sizes:
-
-Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
 
 Here is summary of how network looks:
 
